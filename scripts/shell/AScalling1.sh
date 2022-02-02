@@ -1,0 +1,24 @@
+dir=/home/yichun/RNAmodification/redubam
+suffix=sorted.redu.bam
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:Oidia ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Control:Myc ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Output Myc_Myc > Myc_Myc.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:Oidia ${dir}/O1.${suffix},${dir}/O2.${suffix},${dir}/O3.${suffix} --Control:Myc ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Output Myc_Oidia > Myc_Oidia.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:OiScl ${dir}/S1.${suffix},${dir}/S2.${suffix},${dir}/S3.${suffix} --Control:Myc ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Output Myc_Scl > Myc_Scl.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:Knot ${dir}/K1.${suffix},${dir}/K2.${suffix},${dir}/K3.${suffix} --Control:Myc ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Output Myc_Knot > Myc_Knot.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:Pri ${dir}/P1.${suffix},${dir}/P2.${suffix},${dir}/P3.${suffix} --Control:Myc ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Output Myc_Pri > Myc_Pri.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:YFB ${dir}/YFB1.${suffix},${dir}/YFB2.${suffix},${dir}/YFB3.${suffix} --Control:Myc ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Output Myc_YFB > Myc_YFB.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:BS ${dir}/BS1.${suffix},${dir}/BS2.${suffix},${dir}/BS3.${suffix} --Control:Myc ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Output Myc_BS > Myc_BS.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:BS12h ${dir}/BS12h1.${suffix},${dir}/BS12h2.${suffix},${dir}/BS12h3.${suffix} --Control:Myc ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Output Myc_BS12h > Myc_BS12h.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:BS24h ${dir}/BS24h1.${suffix},${dir}/BS24h2.${suffix},${dir}/BS24h3.${suffix} --Control:Myc ${dir}/M1.${suffix},${dir}/M2.${suffix},${dir}/M3.${suffix} --Output Myc_BS24h > Myc_BS24h.log &
+
+wait
+
+~

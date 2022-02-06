@@ -801,3 +801,61 @@ freq.hist.plot
 f = "RE.aa.hist.pptx"
 topptx(freq.hist.plot, f, width = 5.6, height = 2.3, units = "in")
 rm(freq.hist.plot, f, RE.aa.freq)
+
+##RE similarity
+library(pheatmap)
+heatmap.input<-RE.matrix
+row.names(heatmap.input)<-paste0(heatmap.input$Region, "_", heatmap.input$Position)
+heatmap.input<-heatmap.input[,c(11:37)]
+heatmap.input[is.na(heatmap.input)==F]<-1
+heatmap.input[is.na(heatmap.input)]<-0
+
+heatp<-pheatmap(heatmap.input,
+                legend = TRUE,
+                scale = "none",
+                #scale = "row",
+                cluster_rows = TRUE, cluster_cols = TRUE,
+                treeheight_row = 0, treeheight_col = 50,
+                border_color = NA,
+                cellwidth = 12, cellheight = 0.8, fontsize = 9,
+                angle_col = c("45"),
+                width = 6, height = 6,
+                show_colnames = TRUE,
+                show_rownames = F,
+                na_col = "gray",
+                filename = "RE.level.heatmap.png")
+
+##venn diagram
+library("VennDiagram")
+RE.venn<-RE.list
+RE.venn$location<-paste0(RE.venn$Region,"_",RE.venn$Position)
+
+venn.diagram(x = list(`Sclerotia\nformation` = RE.venn[RE.venn$Stage %in% c("Scl"),"location"],
+                      `Spore\ngermination` = RE.venn[RE.venn$Stage %in% c("BS", "BS12h", "BS24h"),"location"], 
+                      `Mycelia-type` = RE.venn[RE.venn$Stage %in% c("Myc","Oidia","Knot"),"location"],
+                      `FB-type` = RE.venn[RE.venn$Stage %in% c("Pri", "YFB"),"location"]),
+             margin = 0.15, cat.dist = 0.25,
+             fontfamily = "arial", sub.fontfamily = "arial", main.fontfamily = "arial", cat.fonfamily = "arial",
+             filename = "RE.share.venn1.png", imagetype = "png" , 
+             units = "in", height = 4, width = 4, resolution = 300,
+             fill = c("skyblue", "plum2", "burlywood2", "darkgray"), na = "remove")
+
+venn.diagram(x = list(`BS` = RE.venn[RE.venn$Stage %in% c("BS"),"location"], 
+                      `BS12h` = RE.venn[RE.venn$Stage %in% c("BS12h"),"location"],
+                      `BS24h` = RE.venn[RE.venn$Stage %in% c("BS24h"),"location"],
+                      `Pri` = RE.venn[RE.venn$Stage %in% c("Pri"),"location"],
+                      `YFB` = RE.venn[RE.venn$Stage %in% c("Pri", "YFB"),"location"]),
+             margin = 0.15, cat.dist = 0.25,
+             fontfamily = "arial", sub.fontfamily = "arial", main.fontfamily = "arial", cat.fonfamily = "arial",
+             filename = "RE.share.venn2.png", imagetype = "png" , 
+             units = "in", height = 4, width = 4, resolution = 300,
+             fill = c("skyblue", "plum2", "burlywood2", "darkgray", "tan1"), na = "remove")
+
+venn.diagram(x = list(`Myc` = RE.venn[RE.venn$Stage %in% c("Myc"),"location"],
+                      `Oidia` = RE.venn[RE.venn$Stage %in% c("Oidia"),"location"],
+                      `Knot` = RE.venn[RE.venn$Stage %in% c("Knot"),"location"]),
+             margin = 0.15, cat.dist = 0.1,
+             fontfamily = "arial", sub.fontfamily = "arial", main.fontfamily = "arial", cat.fonfamily = "arial",
+             filename = "RE.share.venn3.png", imagetype = "png" , 
+             units = "in", height = 4, width = 4, resolution = 300,
+             fill = c("skyblue", "plum2", "burlywood2"), na = "remove")

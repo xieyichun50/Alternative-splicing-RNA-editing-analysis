@@ -851,6 +851,23 @@ venn.diagram(x = list(`BS` = RE.venn[RE.venn$Stage %in% c("BS"),"location"],
              units = "in", height = 4, width = 4, resolution = 300,
              fill = c("skyblue", "plum2", "burlywood2", "darkgray", "tan1"), na = "remove")
 
+venn.diagram(x = list(`BS` = RE.venn[RE.venn$Stage %in% c("BS"),"location"], 
+                      `BS12h` = RE.venn[RE.venn$Stage %in% c("BS12h"),"location"],
+                      `BS24h` = RE.venn[RE.venn$Stage %in% c("BS24h"),"location"]),
+             margin = 0.15, cat.dist = 0.25,
+             fontfamily = "arial", sub.fontfamily = "arial", main.fontfamily = "arial", cat.fonfamily = "arial",
+             filename = "RE.share.venn5.png", imagetype = "png" , 
+             units = "in", height = 4, width = 4, resolution = 300,
+             fill = c("skyblue", "plum2", "burlywood2"), na = "remove")
+
+venn.diagram(x = list(`Pri` = RE.venn[RE.venn$Stage %in% c("Pri"),"location"],
+                      `YFB` = RE.venn[RE.venn$Stage %in% c("YFB"),"location"]),
+             margin = 0.15, cat.dist = 0.25,
+             fontfamily = "arial", sub.fontfamily = "arial", main.fontfamily = "arial", cat.fonfamily = "arial",
+             filename = "RE.share.venn4.png", imagetype = "png" , 
+             units = "in", height = 4, width = 4, resolution = 300,
+             fill = c("skyblue", "plum2"), na = "remove")
+
 venn.diagram(x = list(`Myc` = RE.venn[RE.venn$Stage %in% c("Myc"),"location"],
                       `Oidia` = RE.venn[RE.venn$Stage %in% c("Oidia"),"location"],
                       `Knot` = RE.venn[RE.venn$Stage %in% c("Knot"),"location"]),

@@ -721,6 +721,10 @@ RE.list.freq<-RE.list.freq[RE.list.freq$Freq > 0,]
 RE.stage.spc<-merge(snpEff.vcf, RE.list.freq[RE.list.freq$Freq ==1,],
                     by = c("Region","Position"), all = F)
 nrow(RE.stage.spc) #207/286
+RE.stage.spc<-merge(RE.list, RE.list.freq[RE.list.freq$Freq ==1,],
+                    by = c("Region","Position"), all = F)
+nrow(RE.stage.spc) #207/286
+xtabs(~Stage, RE.stage.spc)
 
 ##DEG
 DEG<-read.delim("/home/yichun/RNAmodification/expression/DEG.allpairs.txt", header = T)

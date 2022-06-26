@@ -876,3 +876,130 @@ venn.diagram(x = list(`Myc` = RE.venn[RE.venn$Stage %in% c("Myc"),"location"],
              filename = "RE.share.venn3.png", imagetype = "png" , 
              units = "in", height = 4, width = 4, resolution = 300,
              fill = c("skyblue", "plum2", "burlywood2"), na = "remove")
+
+##RE level + gene age + dNdS + stage
+setwd("/home/yichun/RNAmodification/RE_statistics")
+treat.order<-c("Scl",
+               "Oidia",
+               "BS",
+               "BS12h",
+               "BS24h",
+               "Myc",
+               "Knot",
+               "Pri",
+               "YFB")
+
+RE.event<-read.delim("RE.event.T.txt", header = T)
+snpEff.vcf<-read.delim("RE.feature.txt", header = T)
+species="Coprinopsis_cinerea_A43mutB43mut_pab1-1_326"
+refspecies="Coprinopsis_sclerotiger"
+genes.PS<-read.delim(paste0("/home/yichun/RNAmodification/hourglass/blast/",
+                            species,"/e10-5aa30/", 
+                            species,".proteins.fa.PSfinal.txt"), header = T)
+names(genes.PS)[names(genes.PS)=="Gene"]="Genes"
+genes.NS<-read.delim(paste0("/home/yichun/RNAmodification/hourglass/blast/",
+                            species,
+                            "/dnds/Coprinopsis_cinerea_VS_",
+                            refspecies,".NSfinal.txt"))
+names(genes.NS)[names(genes.NS)=="dNdS"]<-"NS"
+genes.NS<-separate(genes.NS, "Genes", c("Genes"), sep = "T")
+genes.hour<-genes.NS[is.na(genes.NS$NS)==F & genes.NS$NS<=2,c("Genes","NS")]
+
+RE.phylo<-merge(RE.event[,c("Region","Position","Stage","Frequency")],
+                snpEff.vcf[,c("Region","Position","Impact","Genes", "Gene.region")],
+                by = c("Region","Position"),
+                all.x = T)
+RE.phylo<-merge(RE.phylo, genes.PS, by="Genes", all.x = T)
+RE.phylo<-merge(RE.phylo, genes.NS[,c("Genes","NS")], by="Genes", all.x = T)
+RE.phylo<-RE.phylo[is.na(RE.phylo$PS)==F,]
+RE.phylo$PS<-paste0("PS",RE.phylo$PS)
+RE.phylo$Mtype="RNA editing"
+
+tab.size<-as.data.frame(xtabs(~PS, unique(RE.phylo[,c("Genes","PS")])))
+genes.PS.stat<-as.data.frame(xtabs(~PS, genes.PS))
+genes.PS.stat$PS<-paste0("PS",genes.PS.stat$PS)
+tab.size<-merge(tab.size,genes.PS.stat, by = "PS", all.x = T)
+tab.size$dotsize<-tab.size$Freq.x/tab.size$Freq.y
+RE.phylo<-merge(RE.phylo, tab.size[,c("PS","dotsize")], by = "PS", all.x = T)
+
+RE.phylo$Gene.region[RE.phylo$Impact == "synonymous_variant"]<-"Synonymous"
+RE.phylo$Gene.region[RE.phylo$Impact != "synonymous_variant" & RE.phylo$Gene.region == "CDS"]<-"Non-synonymous"
+
+write.table(RE.phylo, "RE.phylo.txt", sep = "\t", quote = F, row.names = F)
+
+a<-RE.phylo %>%
+  mutate(Stage = factor(Stage, levels = treat.order),
+         PS = factor(PS, levels = paste0("PS",1:12))) %>%
+  ggplot(aes(x = Frequency, y = NS, size = dotsize, alpha = dotsize))+
+  geom_point(shape = 1)+
+  scale_colour_manual(values = "black")+
+  scale_x_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  scale_y_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  labs(x = "Editing levels", y = "dN/dS", legend = "")+
+  facet_grid(PS~., scales = "free", space = "free")+
+  theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5),
+        panel.background = element_rect(fill = NA),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 8, colour = "black"),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 0),
+        legend.position = "none",
+        panel.grid.minor.x = element_line(linetype = "blank"),
+        strip.text = element_text(size = 12))
+a
+
+ggsave("RE.geneage.png", width = 3, height = 6.5, units = "in", dpi = 300)
+ggsave("RE.geneage.tiff", width = 3, height = 6.5, units = "in", dpi = 300)
+
+a<-RE.phylo %>%
+  mutate(Stage = factor(Stage, levels = treat.order),
+         PS = factor(PS, levels = paste0("PS",1:12)),
+         Gene.region = factor(Gene.region, 
+                              levels = c("5'-UTR","Synonymous","Non-synonymous","3'-UTR","Intergenic"))) %>%
+  ggplot(aes(x = Frequency, y = NS, size = dotsize, alpha = dotsize))+
+  geom_point(shape = 16)+
+  scale_colour_manual(values = "black")+
+  scale_x_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  scale_y_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  labs(x = "Editing levels", y = "dN/dS", legend = "")+
+  facet_grid(PS~Gene.region, scales = "free", space = "free")+
+  theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5),
+        panel.background = element_rect(fill = NA),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 8, colour = "black"),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 0),
+        legend.position = "none",
+        panel.grid.minor.x = element_line(linetype = "blank"),
+        strip.text = element_text(size = 12))
+a
+
+ggsave("RE.geneage.type.png", width = 6.5, height = 6.5, units = "in", dpi = 300)
+ggsave("RE.geneage.type.tiff", width = 6.5, height = 6.5, units = "in", dpi = 300)
+
+
+##RE+AS, hourglass
+all.phylo<-rbind(AS.phylo[,c("PS","NS","Genes","Frequency","Mtype","dotsize")],
+                 RE.phylo[,c("PS","NS","Genes","Frequency","Mtype","dotsize")])
+a<-all.phylo %>%
+  mutate(PS = factor(PS, levels = paste0("PS",1:12))) %>%
+  ggplot(aes(x = Frequency, y = NS, size = dotsize, alpha = dotsize))+
+  geom_point(shape = 1)+
+  scale_colour_manual(values = "black")+
+  scale_x_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  scale_y_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  labs(x = "Relative modification intensity", y = "dN/dS", legend = "")+
+  facet_grid(PS~Mtype, scales = "free", space = "free")+
+  theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5),
+        panel.background = element_rect(fill = NA),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 8, colour = "black"),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 0),
+        legend.position = "none",
+        panel.grid.minor.x = element_line(linetype = "blank"),
+        strip.text = element_text(size = 12))
+a
+
+ggsave("all.geneage.png", width = 4, height = 8, units = "in", dpi = 300)
+ggsave("all.geneage.tiff", width = 4, height = 8, units = "in", dpi = 300)

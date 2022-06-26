@@ -1655,3 +1655,100 @@ FC$Groups[FC$sampleB %in% c("Pri", "YFB") &
                        FC$sampleA %in% c("YFB","BS")]<-"Sporulation"
 AS.diflist.en.spc<-merge(AS.diflist.en.spc, FC[is.na(FC$Groups)==F, c("Genes","Groups","logFC")],
                          by = c("Genes","Groups"), all = F)
+
+##PSI level + gene age + dNdS + stage
+setwd("/home/yichun/RNAmodification/AS_cash")
+treat.order<-c("Scl",
+               "Oidia",
+               "BS",
+               "BS12h",
+               "BS24h",
+               "Myc",
+               "Knot",
+               "Pri",
+               "YFB")
+
+AS.new<-read.delim("Alternative_splicing.exp5.minor05.jad6.txt", header = T)
+PSI.matrix<-read.delim("Alternative_splicing.exp5.minor05.jad6.psi.txt", header = T)
+AS.feature<-read.delim("Alternative_splicing.exp5.minor05.jad6.feature.txt", header = T)
+AS.diflist<-read.delim("AS.cashtest.all.txt", header = TRUE)
+AS.diflist<-AS.diflist[AS.diflist$FDR<0.05 & abs(AS.diflist$delta_PSI) > 0.1,]
+AS.diflist<-merge(AS.diflist, AS.feature[,c("Location","SplicingType","checkgeneID")],
+                  by = c("Location","SplicingType"), all.x = TRUE)
+names(AS.diflist)[names(AS.diflist)=="checkgeneID"]<-"Genes"
+
+species="Coprinopsis_cinerea_A43mutB43mut_pab1-1_326"
+refspecies="Coprinopsis_sclerotiger"
+genes.PS<-read.delim(paste0("/home/yichun/RNAmodification/hourglass/blast/",
+                            species,"/e10-5aa30/", 
+                            species,".proteins.fa.PSfinal.txt"), header = T)
+names(genes.PS)[names(genes.PS)=="Gene"]="Genes"
+genes.NS<-read.delim(paste0("/home/yichun/RNAmodification/hourglass/blast/",
+                            species,
+                            "/dnds/Coprinopsis_cinerea_VS_",
+                            refspecies,".NSfinal.txt"))
+names(genes.NS)[names(genes.NS)=="dNdS"]<-"NS"
+genes.NS<-separate(genes.NS, "Genes", c("Genes"), sep = "T")
+genes.hour<-genes.NS[is.na(genes.NS$NS)==F & genes.NS$NS<=2,c("Genes","NS")]
+
+AS.phylo<-AS.diflist[,c("Genes","delta_PSI","SplicingType")]
+AS.phylo<-merge(AS.phylo, genes.PS, by="Genes", all.x = T)
+AS.phylo<-merge(AS.phylo, genes.NS[,c("Genes","NS")], by="Genes", all.x = T)
+AS.phylo<-AS.phylo[is.na(AS.phylo$PS)==F,]
+AS.phylo$PS<-paste0("PS",AS.phylo$PS)
+AS.phylo$Mtype="Alternative splicing"
+names(AS.phylo)[names(AS.phylo)=="delta_PSI"]<-"Frequency"
+
+tab.size<-as.data.frame(xtabs(~PS, unique(AS.phylo[,c("Genes","PS")])))
+genes.PS.stat<-as.data.frame(xtabs(~PS, genes.PS))
+genes.PS.stat$PS<-paste0("PS",genes.PS.stat$PS)
+tab.size<-merge(tab.size,genes.PS.stat, by = "PS", all.x = T)
+tab.size$dotsize<-tab.size$Freq.x/tab.size$Freq.y
+AS.phylo<-merge(AS.phylo, tab.size[,c("PS","dotsize")], by = "PS", all.x = T)
+write.table(AS.phylo, "AS.phylo.txt", sep = "\t", quote = F, row.names = F)
+
+a<-AS.phylo %>%
+  mutate(PS = factor(PS, levels = paste0("PS",1:12))) %>%
+  ggplot(aes(x = Frequency, y = NS, size = dotsize, alpha = dotsize))+
+  geom_point(shape = 1)+
+  scale_colour_manual(values = "black")+
+  scale_x_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  scale_y_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  labs(x = "Delta PSI", y = "dN/dS", legend = "")+
+  facet_grid(PS~., scales = "free", space = "free")+
+  theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5),
+        panel.background = element_rect(fill = NA),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 8, colour = "black"),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 0),
+        legend.position = "none",
+        panel.grid.minor.x = element_line(linetype = "blank"),
+        strip.text = element_text(size = 12))
+a
+
+ggsave("AS.geneage.png", width = 3, height = 6.5, units = "in", dpi = 300)
+ggsave("AS.geneage.tiff", width = 3, height = 6.5, units = "in", dpi = 300)
+
+a<-AS.phylo %>%
+  mutate(PS = factor(PS, levels = paste0("PS",1:12))) %>%
+  ggplot(aes(x = Frequency, y = NS, size = dotsize, alpha = dotsize))+
+  geom_point(shape = 16)+
+  scale_colour_manual(values = "black")+
+  scale_x_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  scale_y_continuous(limits = c(0,1), breaks = seq(0,1,1))+
+  labs(x = "Delta PSI", y = "dN/dS", legend = "")+
+  facet_grid(PS~SplicingType, scales = "free", space = "free")+
+  theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5),
+        panel.background = element_rect(fill = NA),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 8, colour = "black"),
+        legend.text = element_text(size = 12),
+        legend.title = element_text(size = 0),
+        legend.position = "none",
+        panel.grid.minor.x = element_line(linetype = "blank"),
+        strip.text = element_text(size = 12))
+a
+
+ggsave("AS.geneage.type.png", width = 6.5, height = 6.5, units = "in", dpi = 300)
+ggsave("AS.geneage.type.tiff", width = 6.5, height = 6.5, units = "in", dpi = 300)

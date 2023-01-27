@@ -23,6 +23,12 @@ java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combin
 
 java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:BS24h ${dir}/BS24h1.${suffix},${dir}/BS24h2.${suffix},${dir}/BS24h3.${suffix} --Control:${treat} ${dir}/${sample}1.${suffix},${dir}/${sample}2.${suffix},${dir}/${sample}3.${suffix} --Output ${treat}_BS24h > ${treat}_BS24h.log &
 
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:T1 ${dir}/T1.rep1.${suffix},${dir}/T1.rep2.${suffix},${dir}/T1.rep3.${suffix} --Control:${treat} ${dir}/${sample}1.${suffix},${dir}/${sample}2.${suffix},${dir}/${sample}3.${suffix} --Output ${treat}_T1 > ${treat}_T1.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:T2 ${dir}/T2.rep1.${suffix},${dir}/T2.rep2.${suffix},${dir}/T2.rep3.${suffix} --Control:${treat} ${dir}/${sample}1.${suffix},${dir}/${sample}2.${suffix},${dir}/${sample}3.${suffix} --Output ${treat}_T2 > ${treat}_T2.log &
+
+java -jar -Xmx50g /home/yichun/tools/cash_v2.2.1/cash.jar --MergePval G --Combine True --DisplayAllEvent True --StrandSpecific NONE --SpliceCons True --JuncAllSample 25 --JuncOneGroup 10 --minAnchorLen 5 --minIntronLen 25 --minJuncReadsForNewIso 10 --runSepChr True --GTF /home/yichun/RNAmodification/genome/Coprinopsis_cinerea_A43mutB43mut_pab1-1_326.gff3 --Case:T3 ${dir}/T3.rep1.${suffix},${dir}/T3.rep2.${suffix},${dir}/T3.rep3.${suffix} --Control:${treat} ${dir}/${sample}1.${suffix},${dir}/${sample}2.${suffix},${dir}/${sample}3.${suffix} --Output ${treat}_T3 > ${treat}_T3.log &
+
 wait
 "
 done

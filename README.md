@@ -1,6 +1,1 @@
-# Alternative splicing and RNA editing analysis in <i> Coprinopsis cinerea A43mutB43mut pab 1-1</i> #326
-Alternative splicing analysis with [CASH](https://academic.oup.com/bib/article/19/5/905/3108818). Junction alignment distance (JAD) considered with 6 nt.
-
-RNA editing analysis with [REDItools v1.0.4](https://github.com/BioinfoUNIBA/REDItools/blob/master/README_1.md#download-reditools). Functional impact of RNA editing was predicted by SnfEff.
-
-Statistics in R env.
+Supplementary materials on "The Genome-wide Characterisation of Alternative Splicing and RNA Editing in the Development of <i>Coprinopsis cinerea</i>".

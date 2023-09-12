@@ -1,1 +1,1 @@
-Supplementary materials on "The Genome-wide Characterisation of Alternative Splicing and RNA Editing in the Development of <i>Coprinopsis cinerea</i>".
+Supplementary materials of "Xie, Y., Chan, P.-L., Kwan, H.-S., Chang, J., 2023. The genome-wide characterization of alternative splicing and RNA editing in the development of <i>Coprinopsis cinerea</i>. J. Fungi 9, 915." https://doi.org/10.3390/jof9090915
